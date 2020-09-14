@@ -9,7 +9,8 @@ from getpass import getuser
 
 task = {
     'dev': '/sys/devices/system/cpu/intel_pstate/no_turbo',
-    'file': os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.split(__file__)[-1])),
+    # file : os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.split(__file__)[-1])),
+    'file': sys.argv[0],
     'name': 'Turbo Boost'
 }
 
