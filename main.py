@@ -92,11 +92,15 @@ def set_state():
     if os.access(task['dev'], os.O_RDWR):
         if val is not None:
             f = os.open(task['dev'], os.O_RDWR)
-            os.write(f, bytes(val, 'utf-8'))
+            try:
+                os.write(f, bytes(val, 'utf-8'))
+            except PermissionError:
+                sys.stderr.write('Unable to set Turbo Boost.')
             os.close(f)
+
     elif val is not None:
         if task['exit']:
-            sys.exit('missing rights to save new state, try sudo [command] instead')
+            sys.exit('missing rights to save new state, try sudo [command] instead.')
         else:
             args = list()
             args.append('sudo')
