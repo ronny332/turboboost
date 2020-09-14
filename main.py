@@ -19,7 +19,8 @@ task = {
 def detect_action():
     global task
 
-    if len(sys.argv) == 1:
+    if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] == '-v'):
+        task['verbose'] = True
         show()
         sys.exit(0)
 
@@ -27,10 +28,12 @@ def detect_action():
     parser.add_argument('action', choices=['on', 'off'])
     parser.add_argument('-e', '--exit', action='store_true',
                         help='exit on missing permissions, don\'t use sudo instead')
+    parser.add_argument('-v', '--verbose', action='store_true', default=False, help='be quiet')
 
     args = parser.parse_args()
     task['action'] = args.action
     task['exit'] = args.exit
+    task['verbose'] = args.verbose
 
 
 def detect_env():
@@ -53,10 +56,10 @@ def detect_system():
         return
 
     cores = 0
-    pattern = re.compile(r'cpu[0-9]+')
+    p = re.compile(r'cpu[0-9]+')
 
     for f in os.listdir(os.path.abspath(os.path.dirname(task['dev']) + '/..')):
-        if pattern.match(f):
+        if p.match(f):
             cores += 1
 
     task['cores'] = cores
@@ -104,7 +107,8 @@ def set_state():
 
 
 def show():
-    print(f'{task["name"]} is {get_state()[1]}, running on {task["cores"]} core Intel CPU.')
+    if task['verbose']:
+        print(f'{task["name"]} is {get_state()[1]}, running on {task["cores"]} core Intel CPU.')
 
 
 if __name__ == '__main__':

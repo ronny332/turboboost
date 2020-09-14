@@ -12,15 +12,16 @@ positional arguments:
   {on,off}
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -e, --exit  exit on missing permissions, don't use sudo instead
+  -h, --help     show this help message and exit
+  -e, --exit     exit on missing permissions, don't use sudo instead
+  -v, --verbose  be quiet
 
--> % tb
-Turbo Boost is on
+-> % tb -v
+Turbo Boost is on, running on 36 core Intel CPU.
 
--> % tb off
-Turbo Boost is off
+-> % tb -v off
+Turbo Boost is off, running on 36 core Intel CPU.
 
--> % tb on
-Turbo Boost is on
+-> % tb -v on
+Turbo Boost is on, running on 36 core Intel CPU.
 ```
