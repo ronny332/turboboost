@@ -14,7 +14,7 @@ positional arguments:
 optional arguments:
   -h, --help     show this help message and exit
   -e, --exit     exit on missing permissions, don't use sudo instead
-  -v, --verbose  be quiet
+  -v, --verbose  be verbose
 
 -> % tb -v
 Turbo Boost is on, running on 36 core Intel CPU.
