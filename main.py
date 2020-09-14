@@ -17,8 +17,12 @@ task = {
 def detect_action():
     global task
 
+    if len(sys.argv) == 1:
+        show()
+        sys.exit(0)
+
     parser = ArgumentParser(description='toggle Intel Turbo Boost or show current state')
-    parser.add_argument('action', choices=['on', 'off', 'show'])
+    parser.add_argument('action', choices=['on', 'off'])
     parser.add_argument('-e', '--exit', action='store_true', help='exit on missing permissions')
 
     args = parser.parse_args()
