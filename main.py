@@ -23,7 +23,8 @@ def detect_action():
 
     parser = ArgumentParser(description='toggle Intel Turbo Boost or show current state')
     parser.add_argument('action', choices=['on', 'off'])
-    parser.add_argument('-e', '--exit', action='store_true', help='exit on missing permissions')
+    parser.add_argument('-e', '--exit', action='store_true',
+                        help='exit on missing permissions, don\'t use sudo instead')
 
     args = parser.parse_args()
     task['action'] = args.action

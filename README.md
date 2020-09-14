@@ -13,7 +13,7 @@ positional arguments:
 
 optional arguments:
   -h, --help  show this help message and exit
-  -e, --exit  exit on missing permissions
+  -e, --exit  exit on missing permissions, don't use sudo instead
 
 -> % tb
 Turbo Boost is on
