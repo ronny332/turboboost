@@ -51,7 +51,7 @@ def detect_system():
         sys.exit('This script is only usable on a Linux based OS.')
         return
 
-    if not os.access(task['dev'], os.O_RDONLY):
+    if os.path.isfile(task['dev']) and not os.access(task['dev'], os.O_RDONLY):
         sys.exit('Unable to find Intel Turbo Boost compatible CPU.')
         return
 
