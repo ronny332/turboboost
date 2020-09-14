@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import os
 import subprocess
 import sys
@@ -64,14 +63,14 @@ def set_state():
             os.close(f)
     elif val is not None:
         if task['exit']:
-            res = sys.exit('missing rights to save new state, try sudo [command] instead')
+            sys.exit('missing rights to save new state, try sudo [command] instead')
         else:
             args = list()
             args.append('sudo')
             args.append(task['file'])
             args.append(sys.argv[-1])
-            res = subprocess.run(args)
-            sys.exit(res.returncode)
+            r = subprocess.run(args)
+            sys.exit(r.returncode)
 
 
 def show():
