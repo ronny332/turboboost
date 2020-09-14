@@ -95,7 +95,7 @@ def set_state():
             try:
                 os.write(f, bytes(val, 'utf-8'))
             except PermissionError:
-                sys.stderr.write('Unable to set Turbo Boost.')
+                sys.stderr.write('Unable to set Turbo Boost.\n')
             os.close(f)
 
     elif val is not None:
