@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
+
 import os
+import subprocess
 import sys
 
 from argparse import ArgumentParser
@@ -6,6 +9,7 @@ from getpass import getuser
 
 task = {
     'dev': '/sys/devices/system/cpu/intel_pstate/no_turbo',
+    'file': os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.split(__file__)[-1])),
     'name': 'Turbo Boost'
 }
 
@@ -15,8 +19,11 @@ def detect_action():
 
     parser = ArgumentParser(description='toggle Intel Turbo Boost or show current state')
     parser.add_argument('action', choices=['on', 'off', 'show'])
+    parser.add_argument('-e', '--exit', action='store_true', help='exit on missing permissions')
 
-    task['action'] = parser.parse_args().action
+    args = parser.parse_args()
+    task['action'] = args.action
+    task['exit'] = args.exit
 
 
 def detect_env():
@@ -55,7 +62,15 @@ def set_state():
             os.write(f, bytes(val, 'utf-8'))
             os.close(f)
     elif val is not None:
-        sys.exit('missing rights to save new state, try sudo [command] instead')
+        if task['exit']:
+            res = sys.exit('missing rights to save new state, try sudo [command] instead')
+        else:
+            args = list()
+            args.append('sudo')
+            args.append(task['file'])
+            args.append(sys.argv[-1])
+            res = subprocess.run(args)
+            sys.exit(res.returncode)
 
 
 def show():
