@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import os
+import re
 import subprocess
 import sys
 
 from argparse import ArgumentParser
 from getpass import getuser
+from platform import system
 
 task = {
     'dev': '/sys/devices/system/cpu/intel_pstate/no_turbo',
@@ -35,6 +37,29 @@ def detect_env():
     global task
 
     task['user'] = getuser()
+
+
+def detect_system():
+    global task
+
+    task['system'] = system()
+
+    if task['system'] != 'Linux':
+        sys.exit('This script is only usable on a Linux based OS.')
+        return
+
+    if not os.access(task['dev'], os.O_RDONLY):
+        sys.exit('Unable to find Intel Turbo Boost compatible CPU.')
+        return
+
+    cores = 0
+    pattern = re.compile(r'cpu[0-9]+')
+
+    for f in os.listdir(os.path.abspath(os.path.dirname(task['dev']) + '/..')):
+        if pattern.match(f):
+            cores += 1
+
+    task['cores'] = cores
 
 
 def get_state():
@@ -79,10 +104,11 @@ def set_state():
 
 
 def show():
-    print(f'{task["name"]} is {get_state()[1]}')
+    print(f'{task["name"]} is {get_state()[1]}, running on {task["cores"]} core Intel CPU.')
 
 
 if __name__ == '__main__':
+    detect_system()
     detect_action()
     detect_env()
     # print(task)
